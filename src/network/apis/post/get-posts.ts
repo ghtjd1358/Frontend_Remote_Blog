@@ -15,8 +15,7 @@ export async function getPosts(
       .from('blog_posts')
       .select(`
         *,
-        category:blog_categories(id, name, slug),
-        author:profiles(id, name, avatar_url)
+        category:blog_categories(id, name, slug)
       `, { count: 'exact' });
 
     // 필터 적용

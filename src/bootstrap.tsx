@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { Header } from './components/layout';
 import './global.css';
-
-console.log('🚀 App Starting...');
 
 // 단독 실행 여부 확인 (Host에서 실행되면 window.__REDUX_STORE__가 존재)
 const isStandalone = !window.__REDUX_STORE__;
@@ -17,6 +17,25 @@ const standaloneStore = configureStore({
     },
 });
 
+// Root 컴포넌트 - KOMCA 패턴
+const Root: React.FC = () => {
+    useEffect(() => {
+        if (isStandalone) {
+            document.body.classList.add('has-header');
+        }
+        return () => {
+            document.body.classList.remove('has-header');
+        };
+    }, []);
+
+    return (
+        <>
+            <Header isStandalone={isStandalone} />
+            <App />
+        </>
+    );
+};
+
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {
@@ -25,23 +44,24 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 
-// 단독 실행시에만 Provider로 감싸기 (Host에서는 Host의 Provider 사용)
 if (isStandalone) {
-    console.log('📦 Running in standalone mode');
     root.render(
         <React.StrictMode>
             <Provider store={standaloneStore}>
-                <App />
+                <BrowserRouter>
+                    <Root />
+                </BrowserRouter>
             </Provider>
         </React.StrictMode>
     );
 } else {
-    console.log('🔗 Running in Host container');
     root.render(
         <React.StrictMode>
-            <App />
+            <BrowserRouter>
+                <Root />
+            </BrowserRouter>
         </React.StrictMode>
     );
 }
 
-console.log('✅ App Rendered');
+console.log('Blog App Rendered', isStandalone ? '(Standalone)' : '(In Host)');
