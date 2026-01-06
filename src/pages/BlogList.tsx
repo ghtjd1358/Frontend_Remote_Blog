@@ -16,7 +16,7 @@ const navSections = [
   { id: 'categories', label: '카테고리' },
 ];
 
-const useScrollAnimation = () => {
+const useScrollAnimation = (deps: unknown[] = []) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -33,7 +33,7 @@ const useScrollAnimation = () => {
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, deps);
 };
 
 const BlogList: React.FC = () => {
@@ -42,8 +42,9 @@ const BlogList: React.FC = () => {
   const [categories, setCategories] = useState<CategoryDetail[]>([]);
   const [series, setSeries] = useState<SeriesDetail[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  useScrollAnimation();
+  useScrollAnimation([loading, posts.length, categories.length, series.length]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -256,17 +257,69 @@ const BlogList: React.FC = () => {
               <p>아직 카테고리가 없습니다.</p>
             </div>
           ) : (
-            <div className="category-grid">
-              {categories.map((cat, index) => (
-                <div key={cat.id} className={`category-card animate-on-scroll delay-${index + 1}`}>
-                  <div className="category-icon">{cat.icon || '📁'}</div>
-                  <h3 className="category-name">{cat.name}</h3>
-                  <span className="category-count" style={{ color: cat.color || '#666' }}>
-                    {posts.filter(p => p.category?.id === cat.id).length}개의 글
-                  </span>
+            <>
+              <div className="category-grid">
+                {categories.map((cat, index) => (
+                  <div
+                    key={cat.id}
+                    className={`category-card animate-on-scroll delay-${index + 1} ${selectedCategory === cat.id ? 'selected' : ''}`}
+                    onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
+                  >
+                    <div className="category-icon">{cat.icon || '📁'}</div>
+                    <h3 className="category-name">{cat.name}</h3>
+                    <span className="category-count" style={{ color: cat.color || '#666' }}>
+                      {posts.filter(p => p.category?.id === cat.id).length}개의 글
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* 선택된 카테고리의 글 목록 */}
+              {selectedCategory && (
+                <div className="category-posts-panel">
+                  <div className="category-posts-header">
+                    <h3>
+                      {categories.find(c => c.id === selectedCategory)?.icon}{' '}
+                      {categories.find(c => c.id === selectedCategory)?.name}
+                    </h3>
+                    <button className="close-btn" onClick={() => setSelectedCategory(null)}>✕</button>
+                  </div>
+                  <div className="category-posts-grid">
+                    {posts
+                      .filter(p => p.category?.id === selectedCategory)
+                      .slice(0, 5)
+                      .map((post) => (
+                        <Link
+                          to={`/post/${post.slug || post.id}`}
+                          key={post.id}
+                          className="category-post-card"
+                        >
+                          <div className="category-post-thumb">
+                            {post.cover_image ? (
+                              <img src={post.cover_image} alt={post.title} />
+                            ) : (
+                              <div className="category-post-placeholder">
+                                <span>{post.title.charAt(0)}</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="category-post-info">
+                            <h4 className="category-post-title">{post.title}</h4>
+                            <span className="category-post-date">{formatDate(post.published_at)}</span>
+                          </div>
+                        </Link>
+                      ))}
+                  </div>
+                  {posts.filter(p => p.category?.id === selectedCategory).length > 5 && (
+                    <div className="category-posts-more">
+                      <button className="btn btn-secondary btn-sm">
+                        더보기 ({posts.filter(p => p.category?.id === selectedCategory).length - 5}개 더)
+                      </button>
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </section>

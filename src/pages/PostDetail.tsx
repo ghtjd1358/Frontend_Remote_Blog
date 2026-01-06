@@ -16,7 +16,7 @@ const PostDetail: React.FC = () => {
       if (!slug) return;
 
       try {
-        const response = await getPostDetail(slug);
+        const response = await getPostDetail(slug, true);
         if (response.success && response.data) {
           setPost(response.data);
         } else {

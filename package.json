@@ -7,6 +7,7 @@
     "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {
+    "@mfa/lib": "*",
     "@reduxjs/toolkit": "^2.11.2",
     "@supabase/supabase-js": "^2.89.0",
     "@tiptap/extension-code-block-lowlight": "^3.14.0",

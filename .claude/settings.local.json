@@ -8,7 +8,20 @@
       "Bash(cmd //c \"taskkill /PID 24132 /F\")",
       "Bash(ls:*)",
       "Bash(find:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(node scripts/seed-data.js:*)",
+      "Bash(rm:*)",
+      "Bash(dir \"C:\\Coding\" /B)",
+      "Bash(dir \"C:\\Coding\\개인포트폴리오(Persnal)\\mfa\" /B)",
+      "Bash(cmd //c \"taskkill /PID 8272 /F\")",
+      "Bash(cmd //c \"taskkill /PID 36480 /F\")",
+      "Bash(cmd //c \"taskkill /PID 20332 /F\")",
+      "Bash(cmd //c \"taskkill /PID 34268 /F\")",
+      "Bash(cat:*)",
+      "Bash(xargs -r -I{} cmd //c \"taskkill /PID {} /F\")",
+      "Bash(cd:*)"
     ]
   }
 }

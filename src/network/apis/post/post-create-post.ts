@@ -9,7 +9,7 @@ export async function createPost(
   params: CreatePostRequest
 ): Promise<ApiResponse<PostDetail>> {
   try {
-    const { tagIds, ...postData } = params;
+    const { tagIds, meta_title, meta_description, ...postData } = params;
 
     const { data, error } = await supabase
       .from('blog_posts')
