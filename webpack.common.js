@@ -50,7 +50,7 @@ module.exports = {
   },
 
   plugins: [
-    new Dotenv(),
+    new Dotenv({ systemvars: true, silent: true }),
 
     new ModuleFederationPlugin({
       name: 'blog',
