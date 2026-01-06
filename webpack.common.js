@@ -20,7 +20,20 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'babel-loader'
+        include: [
+          path.resolve(__dirname, 'src'),
+          path.resolve(__dirname, '..', 'lib', 'src')
+        ],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env',
+              ['@babel/preset-react', { runtime: 'automatic' }],
+              '@babel/preset-typescript'
+            ]
+          }
+        }
       },
       {
         test: /\.css$/,
@@ -30,7 +43,10 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      '@mfa/lib': path.resolve(__dirname, '..', 'lib', 'src')
+    }
   },
 
   plugins: [
@@ -52,6 +68,7 @@ module.exports = {
           singleton: true,
           requiredVersion: deps['react-dom']
         },
+        'react-router-dom': { singleton: true },
         '@reduxjs/toolkit': { singleton: true },
         'react-redux': { singleton: true }
       }

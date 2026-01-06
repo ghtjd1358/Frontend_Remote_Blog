@@ -13,6 +13,7 @@ import {
   CreatePostRequest,
   UpdatePostRequest
 } from '../network';
+import { getCurrentUser } from '@mfa/lib';
 
 type PostStatus = 'draft' | 'published';
 
@@ -31,6 +32,7 @@ const PostEditor: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const isEditMode = Boolean(slug);
+  const currentUser = getCurrentUser();
 
   const [formData, setFormData] = useState<FormData>({
     title: '',
@@ -121,8 +123,12 @@ const PostEditor: React.FC = () => {
       if (isEditMode && originalPost) {
         response = await updatePost(originalPost.id, postData as UpdatePostRequest);
       } else {
-        // 임시 userId - 실제로는 인증에서 가져와야 함
-        response = await createPost('temp-user-id', postData as CreatePostRequest);
+        if (!currentUser?.id) {
+          alert('로그인이 필요합니다.');
+          navigate('/login');
+          return;
+        }
+        response = await createPost(currentUser.id, postData as CreatePostRequest);
       }
 
       if (response.success && response.data) {

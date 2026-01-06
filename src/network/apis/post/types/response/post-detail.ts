@@ -7,9 +7,9 @@ export interface PostDetail extends PostSummary {
   /** 내용 */
   content: string | null;
   /** 메타 제목 */
-  meta_title: string | null;
+  meta_title?: string | null;
   /** 메타 설명 */
-  meta_description: string | null;
+  meta_description?: string | null;
   /** 수정일시 */
   updated_at: string;
   /** 태그 목록 */

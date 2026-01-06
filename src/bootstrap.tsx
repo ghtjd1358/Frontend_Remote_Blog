@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+/**
+ * Bootstrap - KOMCA 패턴
+ * 앱 부팅 및 초기화 담당
+ */
+
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import { Header } from './components/layout';
+import Root from './Root';
 import './global.css';
 
 // 단독 실행 여부 확인 (Host에서 실행되면 window.__REDUX_STORE__가 존재)
@@ -17,25 +21,7 @@ const standaloneStore = configureStore({
     },
 });
 
-// Root 컴포넌트 - KOMCA 패턴
-const Root: React.FC = () => {
-    useEffect(() => {
-        if (isStandalone) {
-            document.body.classList.add('has-header');
-        }
-        return () => {
-            document.body.classList.remove('has-header');
-        };
-    }, []);
-
-    return (
-        <>
-            <Header isStandalone={isStandalone} />
-            <App />
-        </>
-    );
-};
-
+// DOM 마운트
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {
@@ -49,7 +35,7 @@ if (isStandalone) {
         <React.StrictMode>
             <Provider store={standaloneStore}>
                 <BrowserRouter>
-                    <Root />
+                    <Root isStandalone={isStandalone} />
                 </BrowserRouter>
             </Provider>
         </React.StrictMode>
@@ -58,7 +44,7 @@ if (isStandalone) {
     root.render(
         <React.StrictMode>
             <BrowserRouter>
-                <Root />
+                <Root isStandalone={isStandalone} />
             </BrowserRouter>
         </React.StrictMode>
     );
