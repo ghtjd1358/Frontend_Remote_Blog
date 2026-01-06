@@ -21,7 +21,14 @@
       "Bash(cmd //c \"taskkill /PID 34268 /F\")",
       "Bash(cat:*)",
       "Bash(xargs -r -I{} cmd //c \"taskkill /PID {} /F\")",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(git rm:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nchore: .gitignore 업데이트 및 불필요한 파일 추적 해제\n\n- node_modules/, dist/, .idea/ 등 gitignore에 추가\n- 기존 추적 중이던 빌드/IDE 파일들 캐시에서 제거\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:localhost)"
     ]
   }
 }

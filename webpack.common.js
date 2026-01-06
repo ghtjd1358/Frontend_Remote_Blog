@@ -22,7 +22,7 @@ module.exports = {
         test: /\.tsx?$/,
         include: [
           path.resolve(__dirname, 'src'),
-          path.resolve(__dirname, '..', 'lib', 'src')
+          path.resolve(__dirname, 'lib', 'src')
         ],
         use: {
           loader: 'babel-loader',
@@ -45,7 +45,7 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
-      '@mfa/lib': path.resolve(__dirname, '..', 'lib', 'src')
+      '@mfa/lib': path.resolve(__dirname, 'lib', 'src')
     }
   },
 
