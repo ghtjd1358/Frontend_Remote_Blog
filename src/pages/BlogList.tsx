@@ -8,7 +8,7 @@ import {
   CategoryDetail,
   SeriesDetail
 } from '../network';
-import { ScrollTopButton } from '../components/button';
+import { ScrollTopButton } from '@mfa/lib';
 
 const navSections = [
   { id: 'posts', label: '포스트' },
