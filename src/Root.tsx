@@ -6,7 +6,11 @@
 import React from 'react';
 import App from './App';
 
-const Root: React.FC = () => {
+interface RootProps {
+    isStandalone?: boolean;
+}
+
+const Root: React.FC<RootProps> = ({ isStandalone = false }) => {
     return <App />;
 };
 

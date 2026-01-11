@@ -1,17 +1,25 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { BlogList, PostDetail, PostEditor } from './pages';
+/**
+ * App Component - KOMCA 패턴
+ * 인증 상태에 따른 라우트 분기
+ */
+
+import React, { Suspense, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { RoutesGuestPages, RoutesAuthPages } from './pages/routes';
 import './global.css';
 
-const App: React.FC = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<BlogList />} />
-      <Route path="/post/:slug" element={<PostDetail />} />
-      <Route path="/write" element={<PostEditor />} />
-      <Route path="/edit/:slug" element={<PostEditor />} />
-    </Routes>
-  );
-};
+function App() {
+    const accessToken = useSelector((state: any) => state.app?.accessToken);
+    const isAuthenticated = useMemo(() => !!accessToken, [accessToken]);
+
+    return (
+        <main className="main-content">
+            <Suspense fallback="">
+                {!isAuthenticated && <RoutesGuestPages />}
+                {isAuthenticated && <RoutesAuthPages />}
+            </Suspense>
+        </main>
+    );
+}
 
 export default App;
