@@ -6,7 +6,7 @@
 import React, { Suspense, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RoutesGuestPages, RoutesAuthPages } from './pages/routes';
-import './global.css';
+import './styles/global.css';
 
 function App() {
     const accessToken = useSelector((state: any) => state.app?.accessToken);

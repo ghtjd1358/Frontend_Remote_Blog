@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import Root from './Root';
-import './global.css';
+import './styles/global.css';
 
 declare global {
     interface Window {

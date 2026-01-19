@@ -7,8 +7,8 @@ import React, { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { RoutePath } from './paths';
 
-const BlogList = lazy(() => import('../BlogList'));
-const PostDetail = lazy(() => import('../PostDetail'));
+const BlogList = lazy(() => import('../blog/BlogList'));
+const PostDetail = lazy(() => import('../post/detail/PostDetail'));
 
 function RoutesGuestPages() {
     return (

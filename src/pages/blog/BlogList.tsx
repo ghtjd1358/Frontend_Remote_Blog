@@ -7,8 +7,8 @@ import {
   PostSummary,
   CategoryDetail,
   SeriesDetail
-} from '../network';
-import { ScrollTopButton } from '@mfa/lib';
+} from '../../network';
+import { ScrollTopButton, StickyNav } from '@sonhoseong/mfa-lib';
 
 const navSections = [
   { id: 'posts', label: '포스트' },
@@ -37,7 +37,6 @@ const useScrollAnimation = (deps: unknown[] = []) => {
 };
 
 const BlogList: React.FC = () => {
-  const [activeSection, setActiveSection] = useState('');
   const [posts, setPosts] = useState<PostSummary[]>([]);
   const [categories, setCategories] = useState<CategoryDetail[]>([]);
   const [series, setSeries] = useState<SeriesDetail[]>([]);
@@ -80,40 +79,6 @@ const BlogList: React.FC = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const viewportHeight = window.innerHeight;
-      const triggerPoint = viewportHeight * 0.2;
-
-      for (const section of navSections) {
-        const element = document.getElementById(section.id);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= triggerPoint && rect.bottom > triggerPoint) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const headerOffset = 60;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
-
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -152,27 +117,11 @@ const BlogList: React.FC = () => {
       </section>
 
       {/* 섹션 네비게이션 바 */}
-      <div className="sticky-nav-wrapper">
-        <nav className="sticky-nav">
-          <button className="nav-logo-dots" onClick={scrollToTop}>
-            <span className="dot blue"></span>
-            <span className="dot green"></span>
-            <span className="dot lime"></span>
-          </button>
-          <ul className="nav-pills">
-            {navSections.map((section) => (
-              <li key={section.id}>
-                <button
-                  className={`nav-pill ${activeSection === section.id ? 'active' : ''}`}
-                  onClick={() => scrollToSection(section.id)}
-                >
-                  {section.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+      <StickyNav
+        sections={navSections}
+        scrollOffset={60}
+        topPosition={20}
+      />
 
       {/* 블로그 목록 */}
       <section id="posts" className="section">
@@ -195,15 +144,51 @@ const BlogList: React.FC = () => {
                   key={post.id}
                   className={`blog-card animate-on-scroll delay-${Math.min(index + 1, 5)}`}
                 >
-                  <div className="blog-card-meta">
-                    <span className="blog-category">{post.category?.name || '미분류'}</span>
-                    <span className="blog-date">{formatDate(post.published_at)}</span>
+                  {/* Thumbnail */}
+                  <div className="blog-card-thumbnail">
+                    {post.cover_image ? (
+                      <img src={post.cover_image} alt={post.title} loading="lazy" />
+                    ) : (
+                      <div className="blog-card-thumbnail-placeholder">
+                        <span>{post.title.charAt(0)}</span>
+                      </div>
+                    )}
                   </div>
-                  <h3 className="blog-card-title">{post.title}</h3>
-                  <p className="blog-card-excerpt">{post.excerpt || ''}</p>
-                  <div className="blog-card-footer">
-                    <span className="blog-read-time">👀 {post.view_count} · ❤️ {post.like_count}</span>
-                    <span className="blog-read-more">읽기 →</span>
+
+                  {/* Card Body */}
+                  <div className="blog-card-body">
+                    <div className="blog-card-meta">
+                      <span className="blog-category">{post.category?.name || '미분류'}</span>
+                      <span className="blog-date">{formatDate(post.published_at)}</span>
+                    </div>
+
+                    <h3 className="blog-card-title">{post.title}</h3>
+                    <p className="blog-card-excerpt">{post.excerpt || '내용 미리보기가 없습니다.'}</p>
+
+                    <div className="blog-card-footer">
+                      <div className="blog-card-stats">
+                        <span className="blog-card-stat">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          {post.view_count || 0}
+                        </span>
+                        <span className="blog-card-stat">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                          </svg>
+                          {post.like_count || 0}
+                        </span>
+                      </div>
+                      <span className="blog-read-more">
+                        더 보기
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </span>
+                    </div>
                   </div>
                 </Link>
               ))}

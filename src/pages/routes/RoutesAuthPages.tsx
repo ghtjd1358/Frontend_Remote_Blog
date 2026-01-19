@@ -7,9 +7,9 @@ import React, { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { RoutePath } from './paths';
 
-const BlogList = lazy(() => import('../BlogList'));
-const PostDetail = lazy(() => import('../PostDetail'));
-const PostEditor = lazy(() => import('../PostEditor'));
+const BlogList = lazy(() => import('../blog/BlogList'));
+const PostDetail = lazy(() => import('../post/detail/PostDetail'));
+const PostEditor = lazy(() => import('../post/editor/PostEditor'));
 
 function RoutesAuthPages() {
     return (

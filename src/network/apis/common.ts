@@ -1,4 +1,4 @@
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../supabase';
 
 /**
  * API 응답 타입

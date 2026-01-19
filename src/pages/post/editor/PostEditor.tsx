@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TiptapEditor } from '../components/editor';
+import { TiptapEditor } from '../../../components/editor';
 import {
   getPostDetail,
   createPost,
@@ -12,8 +12,8 @@ import {
   PostDetail,
   CreatePostRequest,
   UpdatePostRequest
-} from '../network';
-import { getCurrentUser } from '@mfa/lib';
+} from '../../../network';
+import { getCurrentUser } from '@sonhoseong/mfa-lib';
 
 type PostStatus = 'draft' | 'published';
 

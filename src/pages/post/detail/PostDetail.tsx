@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getPostDetail, deletePost, PostDetail as PostDetailType } from '../network';
+import { getPostDetail, deletePost, PostDetail as PostDetailType } from '../../../network';
+import TableOfContents from '../../../components/TableOfContents';
+import { enhanceCodeBlocks } from '../../../utils/codeBlockEnhancer';
 
 const PostDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -31,6 +33,19 @@ const PostDetail: React.FC = () => {
 
     fetchPost();
   }, [slug]);
+
+  // Enhance code blocks with copy buttons
+  useEffect(() => {
+    if (post?.content) {
+      // Small delay to ensure DOM is rendered
+      const timer = setTimeout(() => {
+        const cleanup = enhanceCodeBlocks('.post-content');
+        return cleanup;
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [post?.content]);
 
   const handleDelete = async () => {
     if (!post) return;
@@ -110,13 +125,18 @@ const PostDetail: React.FC = () => {
           </div>
         </header>
 
-        {/* 본문 */}
+        {/* 본문 with TOC */}
         <div className="post-content-wrapper">
-          <div className="container">
-            <div
-              className="post-content"
-              dangerouslySetInnerHTML={{ __html: post.content || '' }}
-            />
+          <div className="post-detail-layout">
+            <div className="post-detail-main">
+              <div
+                className="post-content"
+                dangerouslySetInnerHTML={{ __html: post.content || '' }}
+              />
+            </div>
+
+            {/* Table of Contents */}
+            <TableOfContents content={post.content || ''} />
           </div>
         </div>
 
