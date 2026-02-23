@@ -1,36 +1,39 @@
 import React, { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { LoginPage } from '@sonhoseong/mfa-lib';
+import { LoginPage, storage } from '@sonhoseong/mfa-lib';
 import { RoutePath } from './paths';
 
 const BlogList = lazy(() => import('@/pages/blog/BlogList'));
 const PostDetail = lazy(() => import('@/pages/post/detail/PostDetail'));
 const SeriesDetail = lazy(() => import('@/pages/series/SeriesDetail'));
 
+// KOMCA 패턴: Host에서 실행 시 PREFIX 빈 문자열, 단독 실행 시 /blog
+const PREFIX = storage.isHostApp() ? '' : '/blog';
+
 function RoutesGuestPages() {
     return (
         <Routes>
             {/* 로그인 */}
             <Route
-                path={RoutePath.Login}
+                path={`${PREFIX}${RoutePath.Login}`}
                 element={
                     <LoginPage
                         appName="Blog"
-                        redirectPath={RoutePath.Blog}
+                        redirectPath={`${PREFIX}${RoutePath.Blog}`}
                         showTestAccount={true}
                     />
                 }
             />
 
             {/* 메인 */}
-            <Route path="/" element={<BlogList />} />
-            <Route path={RoutePath.Blog} element={<BlogList />} />
+            <Route path={`${PREFIX}/`} element={<BlogList />} />
+            <Route path={`${PREFIX}${RoutePath.Blog}`} element={<BlogList />} />
 
             {/* 상세 페이지 */}
-            <Route path={RoutePath.PostDetail} element={<PostDetail />} />
+            <Route path={`${PREFIX}${RoutePath.PostDetail}`} element={<PostDetail />} />
 
             {/* 시리즈 상세 */}
-            <Route path={RoutePath.SeriesDetail} element={<SeriesDetail />} />
+            <Route path={`${PREFIX}${RoutePath.SeriesDetail}`} element={<SeriesDetail />} />
 
             {/* 기타 */}
             <Route path="*" element={<BlogList />} />

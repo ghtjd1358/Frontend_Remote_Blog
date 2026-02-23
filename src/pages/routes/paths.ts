@@ -1,17 +1,17 @@
 export const RoutePath = {
-    // 메인
-    Blog: '/blog',
+    // 메인 (상대 경로 - PREFIX와 함께 사용)
+    Blog: '/',
     Login: '/login',
     Dashboard: '/dashboard',
 
-    // 블로그
-    PostDetail: '/blog/post/:slug',
-    Write: '/blog/write',
-    Edit: '/blog/edit/:slug',
-    SeriesDetail: '/blog/series/:slug',
-    Manage: '/blog/manage',
-    My: '/blog/my',
-    UserProfile: '/blog/user/:userId',
+    // 블로그 (상대 경로)
+    PostDetail: '/post/:slug',
+    Write: '/write',
+    Edit: '/edit/:slug',
+    SeriesDetail: '/series/:slug',
+    Manage: '/manage',
+    My: '/my',
+    UserProfile: '/user/:userId',
 
     // 권한
     AdminAuthMenu: '/admin/auth/menu',

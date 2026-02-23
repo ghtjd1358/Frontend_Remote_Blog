@@ -1,8 +1,8 @@
 import React from 'react'
 import { RoutePath } from '@/pages/routes/paths'
 
-// pathPrefix: Host(Container)가 라우트에 사용
-export const pathPrefix = '/blog'
+// pathPrefix: Host(Container)가 라우트에 사용 - /container prefix 포함
+export const pathPrefix = '/container/blog'
 
 export interface LnbItemData {
     id: string
