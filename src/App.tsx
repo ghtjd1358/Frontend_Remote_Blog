@@ -1,6 +1,5 @@
-import React, { Suspense, useMemo, useEffect } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import { selectAccessToken, DeferredComponent } from '@sonhoseong/mfa-lib';
 import { RoutesGuestPages, RoutesAuthPages } from '@/pages/routes';
 import './styles/global.css';

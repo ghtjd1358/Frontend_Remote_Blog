@@ -73,7 +73,7 @@ const PostEditor: React.FC = () => {
     } else {
       if (!currentUser?.id) {
         toast.error('로그인이 필요합니다.');
-        navigate(`${PREFIX}/login`);
+        navigate('/login');
         return;
       }
       createPost({ ...postData, user_id: currentUser.id } as CreatePostRequest);

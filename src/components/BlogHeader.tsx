@@ -145,7 +145,7 @@ const BlogHeader: React.FC = () => {
                 </button>
               </>
             ) : (
-              <Link to={`${PREFIX}/login`} className="blog-header-btn">
+              <Link to="/login" className="blog-header-btn">
                 로그인
               </Link>
             )}
