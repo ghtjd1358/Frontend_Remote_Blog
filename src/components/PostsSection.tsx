@@ -2,6 +2,7 @@ import React from 'react';
 import {PostSummary} from "@/network";
 import {PostCardSkeleton} from "@/components/PostCardSkeleton";
 import {PostCard} from "@/components/PostCard";
+import {DeferredComponent} from "@/components/DeferredComponent";
 
 
 interface PostsSectionProps {
@@ -20,7 +21,9 @@ const PostsSection: React.FC<PostsSectionProps> = ({ posts, isLoading }) => {
 
         <div className="blog-grid">
           {isLoading ? (
-            <PostCardSkeleton count={30} />
+            <DeferredComponent>
+              <PostCardSkeleton count={30} />
+            </DeferredComponent>
           ) : posts.length === 0 ? (
             <div className="empty-state">
               <p>아직 게시된 글이 없습니다.</p>
